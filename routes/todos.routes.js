@@ -16,13 +16,68 @@ const {
 // Get todos
 router.get('/', authorize, function (req, res) {
 
-  // if (req.query.startdate && !validator.isISO8601(req.query.startdate)) {
+  let period = {};
+  let query = {};
+  let sort = 'deadline';
 
-  // }
+  if (req.query.startdate) {
+    if (validator.isISO8601(req.query.startdate)) {
+      period.$gte = req.query.startdate;
+    } else {
+      return res.status(400).send({
+        error: 'Bad request',
+        message: 'Invalid startdate value in query.'
+      });
+    }
+  }
 
-  let query = _.pick(req.query, ['startdate', 'enddate', 'completed']);
+  if (req.query.enddate) {
+    if (validator.isISO8601(req.query.enddate)) {
+      period.$lte = req.query.enddate;
+    } else {
+      return res.status(400).send({
+        error: 'Bad request',
+        message: 'Invalid enddate value in query.'
+      });
+    }
+  }
 
-  let sort = req.query.sort || 'deadline';
+  if (period.$gte || period.$lte) {
+    query.deadline = period;
+  }
+
+  if (req.query.completed) {
+    if (_.indexOf(['true', 'false'], req.query.completed) >= 0) {
+      query.completed = req.query.completed;
+    } else {
+      return res.status(400).send({
+        error: 'Bad request',
+        message: 'Invalid completed value in query.'
+      });
+    }
+  }
+
+  if (req.query.priority) {
+    if (_.indexOf(['0', '1', '2', '3'], req.query.priority) >= 0) {
+      query.priority = req.query.priority;
+    } else {
+      return res.status(400).send({
+        error: 'Bad request',
+        message: 'Invalid priority value in query.'
+      });
+    }
+  }
+
+  if (req.query.sort) {
+    if (_.indexOf(['deadline', '-deadline', 'priority', '-priority', 'completed', '-completed'], req.query.sort) >= 0) {
+      sort = req.query.sort;
+    } else {
+      return res.status(400).send({
+        error: 'Bad request',
+        message: 'Invalid sort value in query.'
+      });
+    }
+  }
 
   let projection = 'task deadline priority completed completedAt _userId';
 
@@ -31,7 +86,7 @@ router.get('/', authorize, function (req, res) {
     projection = 'task deadline priority completed completedAt';
   }
 
-  Todo.find(query, projection).sort(sort).then(todos => { 
+  Todo.find(query, projection).sort(sort).then(todos => {
     res.send({
       todos
     });
@@ -138,7 +193,7 @@ router.patch('/:id', authorize, function (req, res) {
 
   let body = _.pick(req.body, ['task', 'completed', 'deadline', 'priority']);
 
-  if(body.deadline && (!_.isString(body.deadline) || !validator.isISO8601(body.deadline))) {
+  if (body.deadline && (!_.isString(body.deadline) || !validator.isISO8601(body.deadline))) {
     return res.status(400).send({
       error: 'Bad request',
       message: 'Invalid date format for deadline field.'
@@ -194,7 +249,7 @@ router.delete('/:id', authorize, function (req, res) {
   if (req.session.userType === 'user') {
     query._userId = req.session.userId;
   }
-  
+
   Todo.findOneAndRemove(query).then(todo => {
     if (!todo) {
       return res.status(404).send({
