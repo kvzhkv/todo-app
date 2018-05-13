@@ -1,8 +1,6 @@
 const crypto = require('crypto');
 const randomize = require('randomatic');
 
-// const resMessages = require('./res-messages');
-
 const iterationsPbkdf2 = 100;
 const passwordHashSchema = 'pbkdf2';
 const saltLength = 32;

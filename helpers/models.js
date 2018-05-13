@@ -31,7 +31,8 @@ const TodoSchema = new mongoose.Schema({
     type: Number,
     default: 0,
     min: 0,
-    max: 3
+    max: 3,
+    index: true
   }
 });
 
@@ -40,6 +41,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    index: true,
     unique: true,
     validate: {
       validator: validator.isEmail,

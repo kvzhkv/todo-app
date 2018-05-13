@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-// const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
@@ -8,9 +7,9 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 const indexRoutes = require('./routes/index.routes');
-const authRoutes = require('./routes/auth.routes');
-const todosRoutes = require('./routes/todos.routes');
-const usersRoutes = require('./routes/users.routes');
+const authRoutes = require('./routes/v1/auth.routes');
+const todosRoutes = require('./routes/v1/todos.routes');
+const usersRoutes = require('./routes/v1/users.routes');
 
 const app = express();
 
@@ -22,9 +21,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: false
-})); //TODO: выяснить зачем это??
+}));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
