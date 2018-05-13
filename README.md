@@ -1,7 +1,11 @@
 # Todo App API
 
 This is a server todo app for managing todos for multiple users with different roles.
-App build on Express.js and MongoDb.
+App build on Express.js and MongoDB.
+
+## Requirements
+
+Node.js and MongoDB installed.
 
 ## Features
 
@@ -77,9 +81,9 @@ Optional fields:
 Authentication required. Deletes todo by ID. Admin can delete any todo in db, user can delete only those he created.
 
 #### `GET /api/v1/todos`
-Authentication required. Gets todos according to query params. Admin can get all todos in db, user can get only those he created. 
+Authentication required. Gets todos according to query params, example: `/api/v1/todos?completed=false&sort=priority`. Admin can get all todos in db, user can get only those he created. 
 Possible query params:
-  * `sort` - possible values: `deadline` (default), `-deadline`, `priority`, `-priority`, `completed`, `-completed`
+  * `sort` - possible values: `deadline` (default), `-deadline` (for descending sort), `priority`, `-priority`, `completed`, `-completed`
   * `priority`
   * `completed`
   * `startdate` - date value as `YYYY-MM-DD`
