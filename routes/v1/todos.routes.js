@@ -8,10 +8,10 @@ const {
 
 const {
   authorize
-} = require('../helpers/auth');
+} = require('../../helpers/auth');
 const {
   Todo
-} = require('../helpers/models');
+} = require('../../helpers/models');
 
 // Get todos
 router.get('/', authorize, function (req, res) {

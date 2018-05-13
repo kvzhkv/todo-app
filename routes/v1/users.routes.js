@@ -3,12 +3,12 @@ const router = express.Router();
 
 const {
   User
-} = require('../helpers/models');
+} = require('../../helpers/models');
 
 const {
   hashPassword,
   authorize
-} = require('../helpers/auth');
+} = require('../../helpers/auth');
 
 // register new user
 router.post('/', function (req, res) {

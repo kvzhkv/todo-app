@@ -21,7 +21,8 @@ App build on Express.js and MongoDb.
 ## Installation
 
 ```
-git clone
+git clone https://github.com/kvzhkv/todo-app.git
+cd todo-app
 npm install
 ```
 
@@ -54,19 +55,34 @@ Include `email` and `password` fields to authenticate and initiate a session.
 Authentication required. Destroys session and log out user.
 
 #### `POST /api/v1/todos`
-Authentication required.
+Authentication required. Creates new todo.
+Required fields are: 
+  * `task` - not empty string
+  * `deadline` - date as `YYYY-MM-DD` or YYYY-MM-DDThh:mm:ss.sssZ
+Optional field:
+  * `priority` - could be `0`, `1`, `2`, `3`, if not provided defaults to 0
 
 #### `GET /api/v1/todos/{id}`
-Authentication required.
+Authentication required. Gets todo by ID. Admin can get any todo in db, user can get only those he created.
 
 #### `PATCH /api/v1/todos/{id}`
-Authentication required.
+Authentication required. Updates todo by ID. Admin can update any todo in db, user can update only those he created.
+Optional fields:
+  * `task`
+  * `priority`
+  * `completed` - boolean. If `true` app also sets `completedAt` field with current date.
+  * `deadline`
 
 #### `DELETE /api/v1/todos/{id}`
-Authentication required.
+Authentication required. Deletes todo by ID. Admin can delete any todo in db, user can delete only those he created.
 
 #### `GET /api/v1/todos`
-Authentication required.
-
+Authentication required. Gets todos according to query params. Admin can get all todos in db, user can get only those he created. 
+Possible query params:
+  * `sort` - possible values: `deadline` (default), `-deadline`, `priority`, `-priority`, `completed`, `-completed`
+  * `priority`
+  * `completed`
+  * `startdate` - date value as `YYYY-MM-DD`
+  * `enddate` - date value as `YYYY-MM-DD`
 
 

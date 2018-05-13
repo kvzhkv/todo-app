@@ -4,11 +4,11 @@ const validator = require('validator');
 
 const {
   User
-} = require('../helpers/models');
+} = require('../../helpers/models');
 const {
   authorize,
   verifyPassword
-} = require('../helpers/auth');
+} = require('../../helpers/auth');
 
 
 // login user
